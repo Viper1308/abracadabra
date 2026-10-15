@@ -264,7 +264,7 @@ button,a,.card,.pill,.chk{-webkit-tap-highlight-color:transparent;touch-action:m
 
 <button class="fab" id="fab" aria-label="Jump to map">🗺️ Map</button>
 
-<footer>Made with 🎈 for Tannmay · Map data © OpenStreetMap contributors © CARTO</footer>
+<footer>Made with 🎈 for Tannmay · Map data © OpenStreetMap contributors · Esri</footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
@@ -435,14 +435,14 @@ function initMap(){
   map = L.map('map',{zoomControl:true,scrollWheelZoom:false}).setView([12.913,77.665],13);
   const osmAttr='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
   const street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:osmAttr,maxZoom:19});
-  const clean  = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{
-    attribution:osmAttr+' © <a href="https://carto.com/attributions">CARTO</a>',subdomains:'abcd',maxZoom:19});
+  const esri   = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',{
+    attribution:'Tiles © Esri, HERE, Garmin, OpenStreetMap contributors',maxZoom:19});
   const sat    = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{
     attribution:'Tiles © Esri, Maxar, Earthstar Geographics',maxZoom:19});
-  clean.addTo(map);
-  L.control.layers({'Map':clean,'Street (OSM)':street,'Satellite':sat},null,{position:'topright'}).addTo(map);
-  // if the default tiles fail to load, fall back to OpenStreetMap
-  let errs=0; clean.on('tileerror',()=>{ if(++errs===4 && map.hasLayer(clean)){ map.removeLayer(clean); street.addTo(map); } });
+  street.addTo(map);
+  L.control.layers({'Street':street,'Street (alt)':esri,'Satellite':sat},null,{position:'topright'}).addTo(map);
+  // if OpenStreetMap tiles fail to load, fall back to the Esri street map
+  let errs=0; street.on('tileerror',()=>{ if(++errs===4 && map.hasLayer(street)){ map.removeLayer(street); esri.addTo(map); } });
   layer = L.layerGroup().addTo(map);
   map.on('click',()=>map.scrollWheelZoom.enable());
 
