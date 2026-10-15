@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tannmay's Birthday · The Plan</title>
+<meta name="description" content="Minute-by-minute itinerary, route map and packing checklist for Tannmay's birthday.">
+<meta name="theme-color" content="#0e0b1a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+:root{
+  --bg:#0e0b1a; --bg2:#15112a; --card:#1b1636; --card2:#221c42; --line:rgba(255,255,255,.09);
+  --text:#f4f1ff; --muted:#a59fc4; --accent:#ff5d8f; --accent2:#ffb347; --good:#4cd7a0; --bad:#ff6b6b;
+  --mukund:#ff5d8f; --darsh:#ffb347; --ethan:#4cd7c4; --swapnil:#9b8cff; --ayan:#7bd96f;
+  --r:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Manrope',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;
+  background-image:radial-gradient(900px 500px at 85% -10%,rgba(255,93,143,.22),transparent 60%),radial-gradient(800px 500px at -10% 10%,rgba(155,140,255,.20),transparent 60%);
+  background-attachment:fixed;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-.02em}
+a{color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:0 16px}
+
+/* hero */
+.hero{position:relative;padding:90px 0 44px;text-align:center;overflow:hidden;min-height:520px;display:flex;align-items:center;
+  background:linear-gradient(180deg,rgba(14,11,26,.55) 0%,rgba(14,11,26,.72) 55%,var(--bg) 100%),url('hero.png') center 20%/cover no-repeat}
+.hero>.wrap{position:relative;z-index:1;width:100%}
+.hero h1{text-shadow:0 4px 30px rgba(0,0,0,.55)}
+.hero p{color:#d9d4f0;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+.eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent2);
+  border:1px solid rgba(255,179,71,.35);padding:6px 14px;border-radius:99px;background:rgba(255,179,71,.08)}
+.hero h1{font-size:clamp(40px,8vw,88px);line-height:.98;margin:18px 0 12px;font-weight:800}
+.hero h1 span{background:linear-gradient(100deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);max-width:560px;margin:0 auto;font-size:17px}
+.stats{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+.stat{background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:14px;padding:10px 18px;min-width:96px}
+.stat b{display:block;font-family:'Bricolage Grotesque';font-size:22px}
+.stat small{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+.confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.confetti i{position:absolute;top:-20px;width:8px;height:14px;border-radius:2px;opacity:.85;animation:fall linear infinite}
+@keyframes fall{to{transform:translateY(520px) rotate(540deg)}}
+
+/* person switcher */
+.switcher{position:sticky;top:0;z-index:900;padding:12px 0;background:linear-gradient(var(--bg) 70%,transparent);backdrop-filter:blur(8px)}
+.pills{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none}
+.pills::-webkit-scrollbar{display:none}
+.pill{flex:none;display:flex;align-items:center;gap:8px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--text);
+  padding:9px 16px 9px 10px;border-radius:99px;font:600 14px 'Manrope';transition:.2s}
+.pill .dot{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;color:#120d24;background:var(--c,#fff)}
+.pill:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.25)}
+.pill.on{background:var(--c,var(--accent));color:#120d24;border-color:transparent;box-shadow:0 6px 22px -6px var(--c,var(--accent))}
+.pill.on .dot{background:#120d24;color:var(--c)}
+
+/* main layout */
+.main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:22px;align-items:start;margin-top:8px}
+.mapcol{position:sticky;top:78px}
+#map{height:calc(100vh - 110px);min-height:420px;border-radius:var(--r);border:1px solid var(--line);overflow:hidden;box-shadow:0 20px 60px -20px #000}
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;color:var(--muted);font-size:12.5px}
+.banner{border:1px dashed rgba(255,255,255,.2);background:rgba(255,255,255,.04);border-radius:14px;padding:12px 16px;margin-bottom:14px;font-size:14px;color:var(--muted)}
+.banner b{color:var(--text)}
+
+/* timeline */
+.tl{position:relative;padding-left:34px}
+.tl::before{content:"";position:absolute;left:11px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--accent),var(--swapnil),var(--ethan));opacity:.5;border-radius:2px}
+.leg{position:relative;margin:2px 0 2px;font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:8px;padding:2px 0 2px 2px}
+.leg::before{content:"";position:absolute;left:-28px;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:50%;background:var(--bg);border:2px solid var(--muted)}
+.leg em{font-style:normal;background:rgba(255,255,255,.07);padding:3px 10px;border-radius:99px}
+.card{position:relative;margin:10px 0;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 16px 14px;cursor:pointer;transition:.2s}
+.card::before{content:attr(data-n);position:absolute;left:-34px;top:16px;width:24px;height:24px;border-radius:50%;background:var(--accent);color:#120d24;
+  font:800 12px 'Manrope';display:grid;place-items:center;box-shadow:0 0 0 5px var(--bg)}
+.card.noloc::before{content:"";background:var(--muted);width:14px;height:14px;left:-29px;top:20px}
+.card:hover,.card.active{background:var(--card2);border-color:rgba(255,255,255,.22);transform:translateX(3px)}
+.card.active{box-shadow:0 10px 30px -12px var(--accent)}
+.card .top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.time{font:800 13px 'Manrope';color:var(--accent2);letter-spacing:.04em;background:rgba(255,179,71,.1);padding:3px 10px;border-radius:99px;white-space:nowrap}
+.card h3{font-size:20px;margin:6px 0 2px;line-height:1.15}
+.where{color:var(--muted);font-size:14px}
+.desc{font-size:14px;margin-top:6px;color:#d7d2ee}
+.row-foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+.btn{font:700 12.5px 'Manrope';text-decoration:none;color:var(--text);border:1px solid var(--line);background:rgba(255,255,255,.06);padding:7px 12px;border-radius:99px;transition:.15s;cursor:pointer}
+.btn:hover{background:rgba(255,255,255,.14)}
+.btn.primary{background:var(--accent);color:#120d24;border-color:transparent}
+.btn.primary:hover{filter:brightness(1.1);background:var(--accent)}
+.avs{display:flex;margin-left:auto}
+.av{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font:800 11px 'Manrope';color:#120d24;background:var(--c);border:2px solid var(--card);margin-left:-6px}
+.av.off{background:transparent;color:var(--muted);border:2px dashed rgba(255,255,255,.2)}
+.joins{display:inline-block;font-size:12px;font-weight:700;color:var(--good);background:rgba(76,215,160,.12);padding:3px 10px;border-radius:99px;margin-top:8px;margin-right:6px}
+
+/* sections */
+section.block{margin-top:64px}
+section.block>h2{font-size:clamp(28px,4vw,40px);margin-bottom:6px}
+section.block>p.sub{color:var(--muted);margin-bottom:20px}
+.matrix{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.matrix table{border-collapse:separate;border-spacing:0;width:100%;min-width:620px}
+.matrix th,.matrix td{padding:11px 12px;text-align:center;font-size:14px;border-bottom:1px solid var(--line)}
+.matrix th{font:700 12px 'Manrope';text-transform:uppercase;letter-spacing:.08em;color:var(--muted);background:var(--bg2);position:sticky;top:0}
+.matrix td:first-child,.matrix th:first-child{text-align:left;white-space:nowrap;color:var(--accent2);font-weight:800}
+.matrix td:nth-child(2),.matrix th:nth-child(2){text-align:left;font-weight:600}
+.matrix tr:last-child td{border-bottom:0}
+.c{display:inline-block;width:100%;min-width:44px;height:28px;border-radius:8px;line-height:28px;font-weight:800;font-size:13px}
+.c.y{background:rgba(76,215,160,.22);color:var(--good)}
+.c.n{background:rgba(255,107,107,.16);color:var(--bad)}
+.matrix td.hl,.matrix th.hl{box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);background-color:rgba(255,255,255,.04)}
+
+.check-wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:start}
+.checks{display:grid;gap:10px}
+.chk{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;cursor:pointer;user-select:none;transition:.2s}
+.chk:hover{background:var(--card2)}
+.chk input{display:none}
+.box{width:28px;height:28px;border-radius:9px;border:2px solid var(--muted);display:grid;place-items:center;flex:none;transition:.2s;font-size:16px;color:transparent}
+.chk input:checked+.box{background:var(--good);border-color:var(--good);color:#0b2a1f}
+.chk .emo{font-size:26px}
+.chk .lbl b{display:block;font-size:17px}
+.chk .lbl small{color:var(--muted);font-size:13px}
+.chk input:checked~.lbl b{text-decoration:line-through;opacity:.55}
+.prog{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;text-align:center;position:sticky;top:90px}
+.ring{--p:0;width:150px;height:150px;border-radius:50%;margin:0 auto 14px;display:grid;place-items:center;
+  background:conic-gradient(var(--good) calc(var(--p)*1%),rgba(255,255,255,.08) 0);transition:.4s}
+.ring div{width:122px;height:122px;border-radius:50%;background:var(--card);display:grid;place-items:center;font:800 32px 'Bricolage Grotesque'}
+.prog p{color:var(--muted);font-size:14px}
+.prog button{margin-top:14px}
+
+footer{text-align:center;color:var(--muted);font-size:13px;padding:60px 16px 50px}
+
+/* leaflet skin */
+.leaflet-container{background:#0b0919;font-family:'Manrope',sans-serif}
+.pin{width:34px;height:34px;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);background:var(--accent);display:grid;place-items:center;border:2px solid #fff;box-shadow:0 6px 16px rgba(0,0,0,.5)}
+.pin span{transform:rotate(45deg);font:800 14px 'Manrope';color:#120d24}
+.pin.sel{background:var(--accent2);animation:bob 1s ease infinite}
+@keyframes bob{50%{translate:0 -4px}}
+.route{stroke-dasharray:2 12;animation:dash 1s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-14}}
+.leaflet-popup-content-wrapper{background:var(--card);color:var(--text);border-radius:14px;border:1px solid var(--line)}
+.leaflet-popup-tip{background:var(--card)}
+.leaflet-popup-content{margin:12px 14px}
+.leaflet-popup-content b{font-family:'Bricolage Grotesque';font-size:16px}
+.leaflet-popup-content a{color:var(--accent2);font-weight:700;text-decoration:none}
+.leaflet-control-attribution{background:rgba(14,11,26,.7)!important;color:#8e88ab!important}
+.leaflet-control-attribution a{color:#b9b3d6!important}
+.leaflet-bar a{background:var(--card);color:var(--text);border-color:var(--line)}
+
+.pinlist{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.pincard{display:flex;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;text-decoration:none;transition:.2s}
+a.pincard:hover{background:var(--card2);transform:translateY(-2px)}
+.pincard .num{flex:none;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#120d24;font:800 14px 'Manrope';display:grid;place-items:center}
+.pincard.off .num{background:var(--muted)}
+.pincard b{display:block;font:800 17px 'Bricolage Grotesque'}
+.pincard small{color:var(--muted);font-size:13px;display:block}
+.pincard .go{margin-left:auto;font-size:13px;font-weight:800;color:var(--accent2);white-space:nowrap}
+.short{display:none}
+#map{scroll-margin-top:72px}
+.hint{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);z-index:800;background:rgba(14,11,26,.88);color:#fff;font:700 12.5px 'Manrope';
+  padding:8px 14px;border-radius:99px;border:1px solid var(--line);pointer-events:none;transition:opacity .3s;white-space:nowrap}
+.mapbox{position:relative}
+.fab{display:none;position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:950;border:0;border-radius:99px;padding:13px 18px;
+  font:800 14px 'Manrope';background:var(--accent);color:#120d24;box-shadow:0 10px 30px -6px rgba(255,93,143,.7);cursor:pointer}
+.fab.show{display:block}
+button,a,.card,.pill,.chk{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.wrap{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+
+@media(max-width:900px){
+  body{background-attachment:scroll}
+  .main{grid-template-columns:1fr;gap:14px}
+  .mapcol{position:relative;top:0;order:-1}
+  #map{height:42vh;height:42dvh;min-height:280px}
+  .legend{display:none}
+  .check-wrap{grid-template-columns:1fr}
+  .prog{position:relative;top:0}
+  section.block{margin-top:48px}
+}
+@media(max-width:600px){
+  .hero{padding:64px 0 28px;min-height:400px;background-position:center 15%}
+  .hero p{font-size:15px}
+  .stats{gap:8px;margin-top:18px}
+  .stat{min-width:0;flex:1 1 calc(50% - 8px);padding:8px 12px}
+  .stat b{font-size:19px}
+  .pill{padding:10px 14px 10px 8px}
+  .tl{padding-left:30px}
+  .card{padding:14px 14px 12px}
+  .card::before{left:-30px}
+  .card.noloc::before{left:-25px}
+  .tl::before{left:9px}
+  .leg::before{left:-26px}
+  .card h3{font-size:18px}
+  .btn{padding:10px 14px;font-size:13px}
+  .row-foot{gap:8px}
+  .avs{margin-left:0;width:100%;justify-content:flex-end;order:5}
+  .matrix th,.matrix td{padding:9px 5px;font-size:12px}
+  .matrix th{letter-spacing:.02em}
+  .matrix table{min-width:0}
+  .matrix td:first-child{font-size:11.5px;white-space:normal;width:54px}
+  .full{display:none}
+  .short{display:inline}
+  .c{min-width:26px;height:26px;line-height:26px;font-size:12px}
+  .chk{padding:14px}
+  .chk .emo{font-size:22px}
+  .fab.show{display:block}
+}
+@media(min-width:901px){.fab{display:none!important}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="confetti" id="confetti"></div>
+  <div class="wrap">
+    <span class="eyebrow">Operation · Birthday</span>
+    <h1>Tannmay's <span>Birthday</span><br>Game Plan 🎂</h1>
+    <p>Who's where, when, and how to get there. Pick your name to see your personal route.</p>
+    <div class="stats">
+      <div class="stat"><b>5</b><small>People</small></div>
+      <div class="stat"><b>6</b><small>Stops</small></div>
+      <div class="stat"><b>2 PM</b><small>Kickoff</small></div>
+      <div class="stat"><b id="kmTotal">—</b><small>Total route</small></div>
+    </div>
+  </div>
+</header>
+
+<div class="switcher"><div class="wrap"><div class="pills" id="pills"></div></div></div>
+
+<main class="wrap">
+  <div class="main">
+    <div>
+      <div id="banner"></div>
+      <div class="tl" id="timeline"></div>
+    </div>
+    <div class="mapcol">
+      <div class="mapbox"><div id="map"></div><div class="hint" id="hint" style="display:none">Tap the map to move it</div></div>
+      <div class="legend"><span>🟣 Tap a card to fly to its stop</span><span>· Road routes are approximate driving times</span></div>
+    </div>
+  </div>
+
+  <section class="block" id="who">
+    <h2>Who's where, when</h2>
+    <p class="sub">Green means you're with the crew. Red means you haven't joined yet.</p>
+    <div class="matrix" id="matrix"></div>
+  </section>
+
+  <section class="block" id="pins">
+    <h2>All the pins</h2>
+    <p class="sub">Every location in one place. Tap one to open it in Google Maps.</p>
+    <div class="pinlist" id="pinlist"></div>
+  </section>
+
+  <section class="block" id="pack">
+    <h2>Don't forget to bring</h2>
+    <p class="sub">Tick things off as you pack. It saves on this device.</p>
+    <div class="check-wrap">
+      <div class="checks" id="checks"></div>
+      <div class="prog">
+        <div class="ring" id="ring"><div id="pct">0%</div></div>
+        <p id="progText">0 of 4 packed</p>
+        <button class="btn" id="resetChecks">Reset list</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<button class="fab" id="fab" aria-label="Jump to map">🗺️ Map</button>
+
+<footer>Made with 🎈 for Tannmay · Map data © OpenStreetMap contributors © CARTO</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+/* ============ DATA ============ */
+const PEOPLE = [
+  {id:'Mukund',  c:'#ff5d8f', join:0},
+  {id:'Darsh',   c:'#ffb347', join:2},
+  {id:'Ethan',   c:'#4cd7c4', join:3},
+  {id:'Swapnil', c:'#9b8cff', join:5, meet:'thrilld'},
+  {id:'Ayan',    c:'#7bd96f', join:5, meet:'thrilld'},
+];
+/* Swapnil & Ayan make their own way and meet the crew at Thrilld (row 6) */
+const joinRow = p => p.meet ? 6 : p.join;
+function rowFor(person,r,i){
+  if(person && person.meet && i===5)
+    return {...r, title:'Head to Thrilld', at:'thrilld', to:null, arrive:'16:30', icon:'🚶', desc:'Make your own way to Thrilld and meet the crew there at 4:30 PM.'};
+  return r;
+}
+
+const LOCS = {
+  gladia:   {name:'Gladia', sub:'Meeting point', ll:null},
+  theobroma:{name:'Theobroma', sub:'Bakery · Sarjapur', ll:[12.9105896,77.6856042], link:'https://maps.app.goo.gl/cokPhL4tUJHFZgfd6'},
+  chilis:   {name:"Chili's Grill & Bar", sub:'Lunch spot', ll:[12.9201776,77.684079], link:'https://maps.app.goo.gl/Nughgc9fjACCuGez8'},
+  thrilld:  {name:'Thrilld', sub:'Entertainment hub', ll:[12.8951373,77.6570096], link:'https://maps.app.goo.gl/px323ejFXx4JsNEB7'},
+  tannmay:  {name:"Tannmay's house", sub:'La Palazzo Residences', ll:[12.9191369,77.6659181], link:'https://maps.app.goo.gl/kEt9ra9Dn7iTYGYb7'},
+  broadway: {name:'Broadway', sub:'27th Main · Dinner', ll:[12.9237763,77.6515673], link:'https://maps.app.goo.gl/oJ2g5dn5qwcshA6s7'},
+  darsh:    {name:"Darsh's place", sub:'Greenage · Final stop', ll:[12.902479,77.6309947], link:'https://maps.app.goo.gl/h6eGQyQmRodWTEQp7'},
+};
+
+/* t = 24h time. at = where you are at that time. to = where you're heading (if travelling). */
+const ROWS = [
+  {t:'14:00', title:'Meet @ Gladia',        at:'gladia',    icon:'👋', desc:'Kickoff. Regroup before heading out.'},
+  {t:'14:15', title:'Go to Theobroma',      at:'theobroma', icon:'🍰', desc:'Head over to Theobroma.'},
+  {t:'14:20', title:'1st Reveal',           at:'theobroma', icon:'🎁', desc:'The first reveal happens here.'},
+  {t:'14:30', title:"Leave for Chili's",    at:'theobroma', to:'chilis',   icon:'🚗', desc:"Everyone piles in and heads to Chili's."},
+  {t:'15:00', title:"Lunch @ Chili's",      at:'chilis',    icon:'🍔', desc:'Sit-down lunch. Eat well, big evening ahead.'},
+  {t:'16:15', title:'Leave for Thrilld',    at:'chilis',    to:'thrilld',  icon:'🚗', desc:'Wrap up lunch and roll out as the full crew.'},
+  {t:'16:30', title:'Reach Thrilld',        at:'thrilld',   icon:'🎮', desc:'Games, fun, chaos. About 75 minutes of it.'},
+  {t:'17:45', title:'Leave Thrilld',        at:'thrilld',   to:'tannmay',  icon:'🚗', desc:'Time to move.'},
+  {t:'18:00', title:"Tannmay's house",      at:'tannmay',   icon:'🏠', desc:'Quick stop at Tannmay\'s place (La Palazzo).'},
+  {t:'18:15', title:'Reach 27th Main',      at:'broadway',  icon:'📍', desc:'Arrive at Broadway on 27th Main.'},
+  {t:'18:30', title:'Dinner',               at:'broadway',  icon:'🍽️', desc:'Birthday dinner at Broadway.'},
+  {t:'19:15', title:"Head to Darsh's",      at:'broadway',  to:'darsh',    icon:'🏁', desc:"Final stop: Darsh's place."},
+];
+
+const CHECKS = [
+  {id:'laptop',  emo:'💻', t:'Laptop',               s:'Fully charged if you can'},
+  {id:'fun',     emo:'🎲', t:'Fun stuff',            s:'Board games, cards, etc.'},
+  {id:'power',   emo:'🔌', t:'Charger + power bank', s:'Long day. Phones will die.'},
+  {id:'clothes', emo:'👕', t:'Change of clothes',    s:'For the next day'},
+];
+
+/* ============ HELPERS ============ */
+const $ = s => document.querySelector(s);
+const fmt = t => { let [h,m]=t.split(':').map(Number); const ap=h>=12?'PM':'AM'; h=h%12||12; return `${h}:${String(m).padStart(2,'0')} ${ap}`; };
+const initial = n => n[0];
+const pOf = n => PEOPLE.find(p=>p.id===n);
+const present = (p,i) => i >= p.join;
+const mapLink = k => LOCS[k].link
+  ? `<a href="${LOCS[k].link}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:inherit;text-decoration:underline;text-decoration-color:rgba(255,255,255,.35);text-underline-offset:3px">${LOCS[k].name}</a>`
+  : LOCS[k].name;
+const dirLink = k => `https://www.google.com/maps/dir/?api=1&destination=${LOCS[k].ll.join(',')}&travelmode=driving`;
+const hav = (a,b)=>{const R=6371,r=x=>x*Math.PI/180,dLa=r(b[0]-a[0]),dLo=r(b[1]-a[1]);
+  const h=Math.sin(dLa/2)**2+Math.cos(r(a[0]))*Math.cos(r(b[0]))*Math.sin(dLo/2)**2;return 2*R*Math.asin(Math.sqrt(h));};
+
+/* the master chain, used for road routes */
+const CHAIN = ['theobroma','chilis','thrilld','tannmay','broadway','darsh'];
+const legs = {}; // 'a>b' -> {pts:[[lat,lng]..], km, min, real}
+CHAIN.slice(0,-1).forEach((a,i)=>{
+  const b=CHAIN[i+1], A=LOCS[a].ll, B=LOCS[b].ll, km=hav(A,B)*1.3;
+  legs[a+'>'+b] = {pts:[A,B], km, min:Math.max(5,Math.round(km/22*60)), real:false};
+});
+
+const ROUTES = {
+  "theobroma>chilis":[6.11,11,"aqxmAq}cyMJ[n@{BBGbAiDHY@EZgAH]FSTu@FSTu@#oALg@R}@Nw@BQh@wCVyAX}AF]#qBJm@@CD[XaBD[DWV_BTwAXiBH_@Ny@Ps@uAQQCg@E{@Ec@@m@?YcAMU_@_@m@m@_A{@AAMMGEA?KIw@e@KG_@Sc@YQMEEq@i@KIOKKKoAc@WKYCw@Om@K]GSE_AM]Ci@AIAE?Y?c@E_@Am@EQAG?C?g@CY?]?u@Aw@C_ACYE_@Mw@Qi@Mm@MMCa@EIAIBIFYTi@h@{@v@EDEDA@GDc@^IHSNYZCBCLoC|BGFGDaAv@c@#OHGD[Jm@RW@a@NODiAx@_@#IFEBaAt@QFWBkBRM@K@uAJk@DA?QBWBk@Fm@FK?G@g@Fi@D{@Je@F_@t@O^a@v@Yj@EHa@x@[n@Ud@Q#O#KROXQ^Yl@[t@Qz@Gf@U~BYdCEj@M~@G#GFGFkAXUFWHM@U?o@?Y@KBCFIfBI|@AL?HIbAA@?@?BK`AADCRETMpACv@?n@J|@?HCJeANe@LGFGRGFQLUPYTMFQFUBqADK@Zl@DHLAd@?X@J@^L^PTBnC@T?TAREPKLQP]Ps@LYNQRQRI#I`@GpA?r@ALCVCTCjAOj@GZC`@?#@T@tA?`B?tAHbAHjBb@PFTBh@BF?v@@Z?bBB|A@H?f@@J?L@JBp@?X@`@??L?DAVsBCY?i@A?TElC"],
+  "chilis>thrilld":[9.53,17,"upzmAgwcyMDmC?UkBC@I?K?KuACiB?k@CSC_Ci@}@K{AI_B?wAEUC{@?[Bi@FoAN]FMBOBu@@mA@_@F]HOHOJILKPCJGPIXEPGNORMHOHSDQB_@AaB@}@AO?c@?S?e@?C?O@HRDLBHDJXr@bBnEPd@Ph@p@hBHRh@|ABFb@lADLBVNj@B#b@jAx@vBrAhDxCbIrApDxArDbBbENd@L#HZHVTr@bAxCDLnAvDtB|Ft@xBpBlF~@`CL#xB`GrApDPn@Hb@BZ@^Ch@Ej@o@nDe@fCKh@Ib@Kh@PESbAk@nDaA~FkDdNu@vCYpA{@bEo@~Fi@pEm@dFCTH@F?rBTN@t@FnAJfHK`@AvACrBADAd@?R?~@AbAATAlDElCCzDEH?Z?LGZA#?ZAn@?HDR?pDEjAA|@AtCCxAAD?LGR?dA?XAnA?PDbIA`A?#?`A?V@v@Bb@DXB^Bv@JVDtATpCZ|@J~@HvAPv@PbBb@hA^`@NLHBAJDLFd@ZD?@@BBTAlAKpCUZEb@C~@ADCFCHIHOf@cAz@kBH@TD~@NTBRBPBx@JVDv@Jd@Hn@F`APLEBAL?J?L@J@j@BrAFb@BN@R?l@BZBf@DD?l@BJ@H?^BJ?`@BH?#@^Bp@@j@BL?#@XDh@FTBJ@XDRBF?J@H?^@t@Bz@@CEUa@EIAAmA_COYi@gACEMYEIQ]EQEUAc@@Y?e@@G@]@I@SB[BW@QD[DYDUH_@BIHWBIRg@Vg@FKBEDK?AFSDYN_B@GBWBi@?g@AMAMYw@Y_@_@_@[OcDgAGREHtAb@BBCJSr@EJ"],
+  "thrilld>tannmay":[3.59,9,"upumA{j~xMDKRs@BKCCuAc@DIFSe@O}@[cAe@GCa@KmA]a@OUEM?UAyAV]FG@WBo@EC?G?CAICi@MeAYu@[IKEQIi@IWECa@Qg@M]I_@KMMy@y@OQ_@KsAWYOKOOQm@Yk@OWCiAUMGKGOICAIEcAcAe@e@_AgAACSUMOa@[MGCAUGk@KIA{@I_@Ic@OOM[YaBaAw@e@gC{@oBW}@IQAkBOu@GSAmBQc@Es@IG@QBG@SZKb@Gh@Mr@UTSBg@_@}@}@}BaCi@k@i@k@_CcCq@q@GG]_@EESSqCkCwB}@MEOGi@SMEo@ScAa@GCiBo@OGyAc@{Bw@QEu@W{@[WIkCq@M@uAg@G?E@EBQh@a@~@GLIPWh@O`@CDO#_@~@O#MXNHFJHFMj@HJ~Bd@"],
+  "tannmay>broadway":[1.87,4,"agzmA_e`yM_Ce@IKLk@IGO?MIABSh@ITCFADY~@U|@AHCHETETEVG#Kt@Gh@y@nEcAtFSbAk@nDaA~FkDdNu@vCYpA{@bEo@~Fi@pEm@dFCTH@F?p@H"],
+  "broadway>darsh":[6.08,8,"od{mAaj}xMq@IG?IAIAQCYhDI|A?P?D?fAI@QDCHAFCVAb@Eh@ANAP@ZH|BDpABfABf@J~CFdGB^Jl@vAxGP`A@HvA|HDV@N?JAJAHaAfDA@Md@IZELc@zASx@k@rBU`@?@KRU`@Y`@CFGLKTCDM#Sh@Mj@Ib@E^?TBb@DXFz@P~B@HH|@XhD?@@B@XBN?@D~@BP@NJbADPn@nHD`@PfB#pDLlAEtA?DARC^Zf@HX~@bHNlAhBzMX`C@HXhALX`CvEd@|@dAxBf@bAXl@BHDHDJz@a@t@_@JEDCd@WLGROjBgALK`@OzByALGlBgArDmBrKgF|@c@x@_@xAu@fDeBx@c@|@e@bB}@pAs@t@a@jDiBpDmBRQzEoC#OxAw@~BkABA@AJEV^DH`B}@FCb@WNGnAq@lAm@l@[hGiDvBkAv@[hAe@JGBF@FHn@@B?BCR"]
+};
+function decodePoly(s){s=s.replace(/#/g,'\\');let i=0,la=0,ln=0,o=[];while(i<s.length){let b,sh=0,r=0;do{b=s.charCodeAt(i++)-63;r|=(b&31)<<sh;sh+=5}while(b>=32);la+=(r&1)?~(r>>1):(r>>1);sh=0;r=0;do{b=s.charCodeAt(i++)-63;r|=(b&31)<<sh;sh+=5}while(b>=32);ln+=(r&1)?~(r>>1):(r>>1);o.push([la/1e5,ln/1e5]);}return o;}
+Object.entries(ROUTES).forEach(([k,[km,min,g]])=>{ legs[k]={pts:decodePoly(g),km,min,real:true}; });
+
+/* ============ STATE ============ */
+let who = 'Everyone';
+let map, layer;
+
+/* ============ PILLS ============ */
+function buildPills(){
+  const el=$('#pills');
+  const all=[{id:'Everyone',c:'#ff5d8f',i:'★'},...PEOPLE.map(p=>({id:p.id,c:p.c,i:initial(p.id)}))];
+  el.innerHTML = all.map(p=>`<button class="pill ${p.id===who?'on':''}" style="--c:${p.c}" data-id="${p.id}"><span class="dot">${p.i}</span>${p.id}</button>`).join('');
+  el.querySelectorAll('.pill').forEach(b=>b.onclick=()=>{who=b.dataset.id;buildPills();render();});
+}
+
+/* ============ STOPS FOR A VIEW ============ */
+function stopsFor(person){
+  // returns ordered unique location keys with arrival time
+  const list=[]; const push=(k,t,note)=>{ if(!LOCS[k].ll) return; if(!list.find(s=>s.k===k)) list.push({k,t,note}); };
+  ROWS.forEach((r,i)=>{
+    if(person && !present(person,i)) return;
+    const rr=rowFor(person,r,i);
+    push(rr.at, rr.arrive||rr.t);
+  });
+  const lastRow = ROWS[ROWS.length-1];
+  push(lastRow.to, null);
+  return list;
+}
+
+/* ============ TIMELINE ============ */
+function render(){
+  const person = who==='Everyone' ? null : pOf(who);
+  const stops = stopsFor(person);
+  const nOf = k => { const i=stops.findIndex(s=>s.k===k); return i<0?'':i+1; };
+
+  // banner
+  const b=$('#banner');
+  if(person && person.meet){
+    b.innerHTML = `<div class="banner"><b>${person.id}, you're not needed until 4:30 PM.</b> Make your own way to <b>${LOCS[person.meet].name}</b> and meet the crew there. After that you're with everyone to the end.</div>`;
+  } else if(person && person.join>0){
+    const r=ROWS[person.join];
+    const hasLoc = LOCS[r.at].ll;
+    b.innerHTML = `<div class="banner"><b>${person.id}, you're not needed until ${fmt(r.t)}.</b> You join the crew at <b>${LOCS[r.at].name}</b>${r.to?`, just as everyone leaves for <b>${LOCS[r.to].name}</b>`:''}. After that you're with everyone to the end.</div>`;
+  } else if(person){
+    b.innerHTML = `<div class="banner"><b>${person.id}, you're in from the very start.</b> Follow the numbered stops and you'll hit every spot on time.</div>`;
+  } else {
+    b.innerHTML = `<div class="banner"><b>Full crew view.</b> Little avatars show who's with the group at each step. Pick a name above for a personal route.</div>`;
+  }
+
+  // cards
+  let html='';
+  ROWS.forEach((r0,i)=>{
+    if(person && !present(person,i)) return;
+    const r=rowFor(person,r0,i);
+    const loc=LOCS[r.at], n=nOf(r.at);
+    const joiners = PEOPLE.filter(p=>joinRow(p)===i && (!person||p.id!==person.id));
+    const joinTag = (!person && joiners.length)
+      ? `<span class="joins">＋ ${joiners.map(j=>j.id).join(' & ')} join${joiners.length>1?'':'s'}</span>` : '';
+    const youJoin = person && joinRow(person)===i && i>0 ? `<span class="joins">You join here</span>` : '';
+    const avs = PEOPLE.map(p=>`<span class="av ${present(p,i)?'':'off'}" style="--c:${p.c}" title="${p.id}${present(p,i)?'':' (not yet)'}">${initial(p.id)}</span>`).join('');
+    const showNav = loc.ll;
+    html += `
+    <article class="card ${loc.ll?'':'noloc'}" data-i="${i}" data-k="${r.at}" data-n="${n}">
+      <div class="top"><span class="time">${fmt(r.t)}</span><span style="font-size:24px">${r.icon}</span></div>
+      <h3>${r.title}</h3>
+      <div class="where">${mapLink(r.at)}${loc.sub?' · '+loc.sub:''}${r.to?` &nbsp;→&nbsp; <b style="color:var(--text)">${mapLink(r.to)}</b>`:''}</div>
+      <div class="desc">${r.desc}</div>
+      ${joinTag}${youJoin}
+      <div class="row-foot">
+        ${showNav?`<a class="btn primary" href="${LOCS[r.to||r.at].link}" target="_blank" rel="noopener" onclick="event.stopPropagation()">📍 ${r.to?'Open '+LOCS[r.to].name+' in Google Maps':'Open in Google Maps'}</a>`:`<span class="btn" style="cursor:default;opacity:.7">Pin not added yet</span>`}
+        ${!person?`<span class="avs">${avs}</span>`:''}
+      </div>
+    </article>`;
+    if(r.to){
+      const lg = legs[r.at+'>'+r.to];
+      if(lg) html += `<div class="leg" data-leg="${r.at}>${r.to}">🚗 <em>~${lg.km.toFixed(1)} km · ~${lg.min} min drive</em> to ${mapLink(r.to)}</div>`;
+    }
+  });
+  $('#timeline').innerHTML = html;
+  document.querySelectorAll('.card').forEach(c=>c.onclick=()=>focusStop(c.dataset.k,c));
+
+  drawMap(person,stops);
+  buildMatrix();
+}
+
+/* ============ MAP ============ */
+function initMap(){
+  map = L.map('map',{zoomControl:true,scrollWheelZoom:false}).setView([12.913,77.665],13);
+  const osmAttr='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+  const street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:osmAttr,maxZoom:19});
+  const clean  = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{
+    attribution:osmAttr+' © <a href="https://carto.com/attributions">CARTO</a>',subdomains:'abcd',maxZoom:19});
+  const sat    = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{
+    attribution:'Tiles © Esri, Maxar, Earthstar Geographics',maxZoom:19});
+  clean.addTo(map);
+  L.control.layers({'Map':clean,'Street (OSM)':street,'Satellite':sat},null,{position:'topright'}).addTo(map);
+  // if the default tiles fail to load, fall back to OpenStreetMap
+  let errs=0; clean.on('tileerror',()=>{ if(++errs===4 && map.hasLayer(clean)){ map.removeLayer(clean); street.addTo(map); } });
+  layer = L.layerGroup().addTo(map);
+  map.on('click',()=>map.scrollWheelZoom.enable());
+
+  // phones: one finger scrolls the page, not the map, until you tap the map
+  if(L.Browser.mobile || window.matchMedia('(max-width:900px)').matches){
+    const hint=$('#hint'); map.dragging.disable(); hint.style.display='block';
+    const unlock=()=>{ map.dragging.enable(); hint.style.opacity=0; setTimeout(()=>hint.style.display='none',300); };
+    map.on('click',unlock); map.on('zoomstart',unlock);
+    document.addEventListener('touchstart',e=>{ if(!e.target.closest('#map')) map.dragging.disable(); },{passive:true});
+    // floating "Map" button when the map is off-screen
+    const fab=$('#fab');
+    new IntersectionObserver(([en])=>fab.classList.toggle('show',!en.isIntersecting),{threshold:.2}).observe($('#map'));
+    fab.onclick=()=>$('#map').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+}
+const markers={};
+function drawMap(person,stops){
+  layer.clearLayers(); Object.keys(markers).forEach(k=>delete markers[k]);
+  const color = person ? person.c : '#ff5d8f';
+  const keys = stops.map(s=>s.k);
+
+  // route legs between consecutive stops
+  for(let i=0;i<keys.length-1;i++){
+    const lg = legs[keys[i]+'>'+keys[i+1]];
+    if(!lg) continue;
+    const o={lineCap:'round',lineJoin:'round'};
+    L.polyline(lg.pts,{...o,color:'#120d24',weight:9,opacity:.85}).addTo(layer);
+    L.polyline(lg.pts,{...o,color,weight:5,opacity:1}).addTo(layer);
+    L.polyline(lg.pts,{...o,color:'#fff',weight:2,opacity:.9,className:'route'}).addTo(layer);
+  }
+  stops.forEach((s,idx)=>{
+    const loc=LOCS[s.k];
+    const icon=L.divIcon({className:'',html:`<div class="pin" style="background:${color}"><span>${idx+1}</span></div>`,iconSize:[34,34],iconAnchor:[17,34],popupAnchor:[0,-34]});
+    const m=L.marker(loc.ll,{icon}).addTo(layer);
+    const t = s.t ? `<div style="color:var(--muted);font-size:13px">Arrive ${fmt(s.t)}</div>` : `<div style="color:var(--muted);font-size:13px">Final stop</div>`;
+    m.bindPopup(`<b>${idx+1}. ${loc.name}</b><div style="color:var(--muted);font-size:13px">${loc.sub||''}</div>${t}<div style="margin-top:8px"><a href="${loc.link}" target="_blank" rel="noopener">Open in Google Maps ↗</a></div>`);
+    m.on('click',()=>highlightCard(s.k));
+    markers[s.k]=m;
+  });
+  const pts = keys.map(k=>LOCS[k].ll);
+  if(pts.length) map.fitBounds(L.latLngBounds(pts).pad(.25),{animate:true});
+}
+function highlightCard(k){
+  document.querySelectorAll('.card').forEach(c=>c.classList.toggle('active',c.dataset.k===k));
+  const c=document.querySelector(`.card[data-k="${k}"]`); if(c) c.scrollIntoView({block:'center',behavior:'smooth'});
+}
+function focusStop(k,card){
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('active'));
+  card.classList.add('active');
+  const m=markers[k]; if(!m) return;
+  map.flyTo(m.getLatLng(),16,{duration:.9}); m.openPopup();
+  if(window.innerWidth<=900) $('#map').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* Real road routes (pre-fetched from OpenStreetMap routing data, so no live request is needed) */
+function buildPins(){
+  const order=['gladia',...CHAIN];
+  $('#pinlist').innerHTML = order.map((k,i)=>{
+    const L_=LOCS[k], row=ROWS.find(r=>r.at===k);
+    const when = row ? `Arrive ${fmt(row.t)}` : 'Final stop';
+    const inner = `<span class="num">${i+1}</span><span><b>${L_.name}</b><small>${L_.sub||''} · ${when}</small></span>${L_.link?'<span class="go">Open ↗</span>':'<span class="go" style="color:var(--muted)">No pin yet</span>'}`;
+    return L_.link ? `<a class="pincard" href="${L_.link}" target="_blank" rel="noopener">${inner}</a>` : `<div class="pincard off">${inner}</div>`;
+  }).join('');
+}
+function showTotal(){
+  const tot = CHAIN.slice(0,-1).reduce((s,a,i)=>s+legs[a+'>'+CHAIN[i+1]].km,0);
+  $('#kmTotal').textContent = tot.toFixed(1)+' km';
+}
+
+/* ============ MATRIX ============ */
+function buildMatrix(){
+  const hi = who==='Everyone'?null:who;
+  let h=`<table><thead><tr><th>Time</th><th>Event</th>${PEOPLE.map(p=>`<th class="${hi===p.id?'hl':''}" style="${hi===p.id?'color:'+p.c:''}"><span class="full">${p.id}</span><span class="short">${p.id[0]}</span></th>`).join('')}</tr></thead><tbody>`;
+  ROWS.forEach((r,i)=>{
+    h+=`<tr><td>${fmt(r.t)}</td><td>${r.title}</td>${PEOPLE.map(p=>`<td class="${hi===p.id?'hl':''}"><span class="c ${present(p,i)?'y':'n'}">${present(p,i)?'✓':'—'}</span></td>`).join('')}</tr>`;
+  });
+  $('#matrix').innerHTML=h+'</tbody></table>';
+}
+
+/* ============ CHECKLIST ============ */
+function loadChecks(){ try{return JSON.parse(localStorage.getItem('tb-checks')||'{}')}catch(e){return {}} }
+function saveChecks(s){ try{localStorage.setItem('tb-checks',JSON.stringify(s))}catch(e){} }
+let checkState = loadChecks();
+function buildChecks(){
+  $('#checks').innerHTML = CHECKS.map(c=>`
+    <label class="chk"><input type="checkbox" data-id="${c.id}" ${checkState[c.id]?'checked':''}>
+      <span class="box">✓</span><span class="emo">${c.emo}</span>
+      <span class="lbl"><b>${c.t}</b><small>${c.s}</small></span></label>`).join('');
+  document.querySelectorAll('#checks input').forEach(i=>i.onchange=()=>{checkState[i.dataset.id]=i.checked;saveChecks(checkState);updateProg(true);});
+  updateProg(false);
+}
+function updateProg(celebrate){
+  const done = CHECKS.filter(c=>checkState[c.id]).length, pct=Math.round(done/CHECKS.length*100);
+  $('#ring').style.setProperty('--p',pct); $('#pct').textContent=pct+'%';
+  $('#progText').textContent = done===CHECKS.length ? 'All packed. Let\'s party! 🎉' : `${done} of ${CHECKS.length} packed`;
+  if(celebrate && done===CHECKS.length) burst();
+}
+$('#resetChecks').onclick=()=>{checkState={};saveChecks(checkState);buildChecks();};
+
+/* ============ CONFETTI ============ */
+function burst(){ const el=$('#confetti'); el.innerHTML=''; confetti(el,70); window.scrollTo({top:0,behavior:'smooth'}); }
+function confetti(el,n){
+  const cols=['#ff5d8f','#ffb347','#4cd7c4','#9b8cff','#7bd96f','#fff'];
+  for(let i=0;i<n;i++){
+    const s=document.createElement('i');
+    s.style.left=Math.random()*100+'%';
+    s.style.background=cols[i%cols.length];
+    s.style.animationDuration=(4+Math.random()*5)+'s';
+    s.style.animationDelay=(-Math.random()*8)+'s';
+    s.style.transform=`rotate(${Math.random()*360}deg)`;
+    el.appendChild(s);
+  }
+}
+
+/* ============ GO ============ */
+confetti($('#confetti'),window.innerWidth<600?16:36);
+showTotal(); buildPins(); initMap(); buildPills(); buildChecks(); render();
+</script>
+</body>
+</html>
